@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login · JAMB UTME Lab</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+  <div class="login-wrap">
+    <div class="login-card">
+      <div class="login-crest">
+        <img src="/assets/jamb-crest.png" alt="JAMB Crest" onerror="this.style.display='none'">
+      </div>
+      <h1>JAMB<span>UTME</span> Lab</h1>
+      <p>Admin Panel</p>
+      <input type="password" id="pw" class="login-input" placeholder="Enter admin password" autocomplete="current-password">
+      <button class="login-btn" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Login</button>
+      <div class="login-error" id="err"></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"><i class="fas fa-check-circle"></i> <span id="toastMsg"></span></div>
+
+  <script src="/js/admin/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // If already logged in, go to dashboard
+      fetch('/api/admin/verify', { credentials: 'same-origin' })
+        .then(r => r.ok ? r.json() : null)
+        .then(d => { if (d && d.valid) window.location.href = '/admin/index.html'; })
+        .catch(() => {});
+
+      const pw = document.getElementById('pw');
+      const btn = document.getElementById('loginBtn');
+      const err = document.getElementById('err');
+
+      async function doLogin() {
+        const password = pw.value.trim();
+        if (!password) { err.textContent = 'Please enter a password'; return; }
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner"></span> Logging in...';
+        err.textContent = '';
+        try {
+          const r = await fetch('/api/admin/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'same-origin',
+            body: JSON.stringify({ password })
+          });
+          const data = await r.json();
+          if (data.success) {
+            window.location.href = '/admin/index.html';
+          } else {
+            err.textContent = data.message || 'Login failed';
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
+          }
+        } catch (e) {
+          err.textContent = 'Network error';
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
+        }
+      }
+
+      btn.addEventListener('click', doLogin);
+      pw.addEventListener('keydown', (e) => { if (e.key === 'Enter') doLogin(); });
+    });
+  </script>
+</body>
+</html>
