@@ -1,0 +1,12 @@
+{
+  "name": "jamb-utme-lab",
+  "version": "1.0.0",
+  "private": true,
+  "description": "JAMB UTME Lab - Admin Panel",
+  "scripts": {
+    "dev": "vercel dev"
+  },
+  "engines": {
+    "node": ">=18.x"
+  }
+}
