@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Questions · JAMB UTME Lab</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="side-brand">
+        <div class="side-brand-crest"><img src="/assets/jamb-crest.png" alt="JAMB" onerror="this.style.display='none'"></div>
+        <div class="side-brand-text"><h2>JAMB<span>Lab</span></h2><small>Admin</small></div>
+      </div>
+      <div id="sideLinks"></div>
+      <div class="side-foot">
+        <button class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></button>
+        <div>v1.0 · UTME 2026</div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <h1><i class="fas fa-book"></i> Questions</h1>
+        <div class="topbar-actions">
+          <button class="btn btn-muted" id="importBtn"><i class="fas fa-file-import"></i> Import JSON</button>
+          <a class="btn btn-muted" href="/api/admin/export-questions" download><i class="fas fa-file-export"></i> Export JSON</a>
+          <button class="btn btn-success" id="saveBtn"><i class="fas fa-save"></i> Save Changes</button>
+          <button class="btn btn-primary" id="addSubjectBtn"><i class="fas fa-plus"></i> New Subject</button>
+        </div>
+      </div>
+
+      <input type="file" id="importFile" accept="application/json" style="display:none">
+
+      <div class="card" id="subjectsCard">
+        <div class="card-title"><i class="fas fa-layer-group"></i> Subjects</div>
+        <div id="subjectList"></div>
+      </div>
+
+      <div class="card" id="editorCard" style="display:none;">
+        <div class="card-title"><i class="fas fa-edit"></i> <span id="editorTitle">Editing</span></div>
+        <div id="editorBody"></div>
+      </div>
+    </main>
+  </div>
+
+  <div class="toast" id="toast"><i class="fas fa-check-circle"></i> <span id="toastMsg"></span></div>
+  <script src="/js/admin/auth.js"></script>
+  <script src="/js/admin/questions.js"></script>
+</body>
+</html>
