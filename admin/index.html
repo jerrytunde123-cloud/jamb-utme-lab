@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard · JAMB UTME Lab</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="side-brand">
+        <div class="side-brand-crest"><img src="/assets/jamb-crest.png" alt="JAMB" onerror="this.style.display='none'"></div>
+        <div class="side-brand-text">
+          <h2>JAMB<span>Lab</span></h2>
+          <small>Admin</small>
+        </div>
+      </div>
+      <div id="sideLinks"></div>
+      <div class="side-foot">
+        <button class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></button>
+        <div>v1.0 · UTME 2026</div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <h1><i class="fas fa-chart-line"></i> Dashboard</h1>
+        <div class="topbar-actions">
+          <button class="btn btn-muted" id="refreshBtn"><i class="fas fa-sync-alt"></i> Refresh</button>
+        </div>
+      </div>
+
+      <div class="kpi-grid" id="kpiGrid">
+        <div class="kpi"><div class="kpi-icon kpi-blue"><i class="fas fa-eye"></i></div><div class="kpi-num">—</div><div class="kpi-lbl">Loading…</div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><i class="fas fa-chart-area"></i> Traffic · Last 14 days</div>
+        <div class="chart-wrap">
+          <canvas id="trafficChart" class="chart-canvas"></canvas>
+        </div>
+        <div class="chart-legend">
+          <span><span class="legend-dot" style="background:#1a5f7a;"></span> Page views (pings)</span>
+          <span><span class="legend-dot" style="background:#25D366;"></span> Unique users</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><i class="fas fa-info-circle"></i> Quick guide</div>
+        <p style="font-size:0.85rem; color:#3f637a; line-height:1.7;">
+          <strong>1.</strong> Go to <a href="/admin/questions.html" style="color:#1a5f7a;font-weight:700;">Questions</a> → click <em>Import JSON</em> to load your existing <code>question-bank.json</code>.<br>
+          <strong>2.</strong> Go to <a href="/admin/pins.html" style="color:#1a5f7a;font-weight:700;">PINs</a> → generate PINs in bulk for your customers.<br>
+          <strong>3.</strong> Go to <a href="/admin/tasks.html" style="color:#1a5f7a;font-weight:700;">Tasks</a> → edit channels, URLs, and rewards.<br>
+          <strong>4.</strong> When ready to sync to live site → Questions page → <em>Export JSON</em> → commit to live repo.
+        </p>
+      </div>
+    </main>
+  </div>
+
+  <div class="toast" id="toast"><i class="fas fa-check-circle"></i> <span id="toastMsg"></span></div>
+  <script src="/js/admin/auth.js"></script>
+  <script src="/js/admin/dashboard.js"></script>
+</body>
+</html>
