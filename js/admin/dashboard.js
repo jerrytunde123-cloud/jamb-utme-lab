@@ -20,7 +20,6 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     const s = data.stats;
 
-    // KPIs
     const kpiGrid = document.getElementById('kpiGrid');
     const cards = [
       { cls: 'kpi-blue', icon: 'fa-eye', num: s.traffic.totalPings.toLocaleString(), lbl: 'Total Page Views' },
@@ -47,6 +46,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
   function drawChart(days) {
     const canvas = document.getElementById('trafficChart');
+    if (!canvas) return;
     const ctx = canvas.getContext('2d');
     const dpr = window.devicePixelRatio || 1;
     const rect = canvas.getBoundingClientRect();
@@ -64,7 +64,6 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     const maxVal = Math.max(1, ...days.map((d) => Math.max(d.pings, d.unique)));
 
-    // Grid lines
     ctx.strokeStyle = '#e9edf2';
     ctx.lineWidth = 1;
     for (let i = 0; i <= 4; i++) {
@@ -77,7 +76,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     const step = chartW / Math.max(1, days.length - 1);
 
-    function drawLine(key, color, fill) {
+    function drawLine(key, color) {
       ctx.beginPath();
       days.forEach((d, i) => {
         const x = PAD.left + step * i;
@@ -90,7 +89,6 @@ document.addEventListener('DOMContentLoaded', async function() {
       ctx.lineJoin = 'round';
       ctx.stroke();
 
-      // Dots
       days.forEach((d, i) => {
         const x = PAD.left + step * i;
         const y = PAD.top + chartH - (d[key] / maxVal) * chartH;
@@ -104,7 +102,6 @@ document.addEventListener('DOMContentLoaded', async function() {
     drawLine('pings', '#1a5f7a');
     drawLine('unique', '#25D366');
 
-    // X-axis labels
     ctx.fillStyle = '#6f8b9c';
     ctx.font = '11px Segoe UI';
     ctx.textAlign = 'center';
@@ -116,9 +113,20 @@ document.addEventListener('DOMContentLoaded', async function() {
       }
     });
 
-    // Y-axis labels
     ctx.textAlign = 'right';
     for (let i = 0; i <= 4; i++) {
       const val = Math.round(maxVal * (4 - i) / 4);
       const y = PAD.top + (chartH * i / 4) + 4;
-      ctx.fill
+      ctx.fillText(val, PAD.left - 6, y);
+    }
+  }
+
+  window.addEventListener('resize', () => {
+    fetch('/api/admin/stats', { credentials: 'same-origin' })
+      .then(r => r.json())
+      .then(d => { if (d.success) drawChart(d.stats.traffic.daily); })
+      .catch(() => {});
+  });
+
+  loadStats();
+});
